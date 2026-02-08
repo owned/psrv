@@ -1,180 +1,90 @@
-# OBS Stream Server 🎥
+# PSRV Stream Server 🎥
 
-A simple, password-protected streaming server that allows you to stream your OBS gameplay to a custom website accessible both locally and externally via Cloudflare Tunnel.
+**A powerful, portable streaming server for OBS with zero-config external access.**
 
-## ✨ Features
+PSRV (Portable Streaming Runtime Video) allows you to stream from OBS Studio to a custom, password-protected website that you can share with friends anywhere in the world. It combines the power of an RTMP server, HLS transcoding, and WebRTC low-latency delivery into a single, easy-to-use application.
 
-- 🔐 **Password Protection** - Secure your stream with a simple password
-- 🌐 **Local & External Access** - Share with friends outside your network
-- 🎮 **OBS Integration** - Easy RTMP streaming setup
-- 📱 **Responsive Design** - Works on desktop and mobile
-- 🚀 **Portable .exe** - Run anywhere without Node.js installation
-- ⚡ **Low Latency** - HLS streaming with ~2-5 second delay
+![PSRV Interface](https://via.placeholder.com/800x450?text=PSRV+Stream+Server+Interface)
 
-## 📋 Prerequisites
+## ✨ Key Features
 
-**For Development:**
-- Node.js 16+ ([Download here](https://nodejs.org/))
-- OBS Studio ([Download here](https://obsproject.com/))
-
-**For Portable .exe:**
-- OBS Studio only (no Node.js needed!)
+- **🚀 Truly Portable**: Runs as a single `.exe` file. No Node.js or complex installation required.
+- **🔐 Secure & Private**: Password-protected viewer with built-in Cloudflare Tunnel support for secure external access.
+- **⚡ Ultra-Low Latency**: Supports **WebRTC (WHIP/WHEP)** for sub-second delay streaming.
+- **📱 Universal Compatibility**: Falls back to **HLS** for perfect playback on mobile devices (iOS/Android).
+- **🔄 Auto-Updates**: Automatically checks for and installs new features and fixes.
+- **🎛️ Advanced Control Panel**:
+    - Real-time Bitrate & Viewer Stats
+    - Health Check Dashboard
+    - Hot-swappable Stream Sources
+    - Dark/Light Theme
+    - System Tray Integration
 
 ## 🚀 Quick Start
 
-### Option 1: Use the Launcher (Easiest!)
+### 1. Download & Run
+Download the latest `PSRV-StreamServer-Setup.exe` from the [Releases](https://github.com/owned/psrv/releases) page and install it.
 
-**Just double-click `start-server.bat`!**
+### 2. Configure OBS Studio
+1.  Open **OBS Studio**.
+2.  Go to **Settings > Stream**.
+3.  Set **Service** to `Custom`.
+4.  **Server**: `rtmp://localhost:1935/live`
+5.  **Stream Key**: `stream` (default)
+6.  Click **Apply**.
 
-This automatically:
-- Starts the streaming server
-- Offers optional Cloudflare Tunnel for external access
+### 3. Start Streaming
+1.  In PSRV, click **START ALL SERVICES**.
+2.  In OBS, click **Start Streaming**.
+3.  Your stream is now live locally at `http://localhost:8080`!
 
-All services will open in Windows Terminal tabs (or separate windows if WT not installed).
+## 🌐 External Access (Share with Friends)
 
-### Option 2: Run Manually
+You don't need to port forward! PSRV integrates with **Cloudflare Tunnel** for free, secure external access.
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+1.  In the PSRV Control Panel, scroll to the **Cloudflare Tunnel** card.
+2.  Click **Start**.
+3.  Wait a moment for the **Public URL** to appear (e.g., `https://random-name.trycloudflare.com`).
+4.  Share this link with your friends! They can watch your stream securely from any device.
 
-2. **Start the server:**
-   ```bash
-   npm start
-   ```
+## 🛠️ Advanced Features
 
-3. **Access the stream:**
-   - Local: `http://localhost:8080`
-   - For external access, see [CLOUDFLARE_TUNNEL.md](CLOUDFLARE_TUNNEL.md)
+### WebRTC (Low Latency)
+For real-time interaction (gaming, chatting), enable WebRTC:
+1.  Go to **Advanced Settings**.
+2.  Ensure a **TURN Server** is configured (we provide defaults, or use your own).
+3.  Viewers will automatically use WebRTC if supported, falling back to HLS if needed.
 
-### Option 2: Use Portable Executable
+### Health Dashboard
+Click the **Running Health Checks** button (heartbeat icon) to see the status of all subsystems:
+- HTTP/RTMP Server connectivity
+- WebSocket (Chat/Stats) latency
+- Cloudflare Tunnel status
+- WebRTC TURN server reachability
 
-**For running on computers without Node.js:**
+## ⚙️ Configuration
 
-1. **Build the executable:**
-   ```bash
-   npm run build
-   ```
+All settings can be changed directly in the app:
+- **Stream Title**: Change the title displayed on the viewer page.
+- **Password**: Protect your stream (default: `stream123`).
+- **Ports**: Customize HTTP (8080) and RTMP (1935) ports.
+- **Auto-Start**: Configure PSRV to launch on system startup or start services automatically.
 
-2. **Copy to target computer:**
-   - `obs-stream-server.exe`
-   - `start-server.bat`
-   - `public/` folder
-   - `media/` folder
+## 🤝 Troubleshooting
 
-3. **Run:**
-   - Double-click `start-server.bat`
-   - Follow prompts for stream settings
+**"Stream is offline"**
+- Ensure OBS is actually streaming.
+- Check that the **Stream Key** in OBS matches the one in PSRV.
 
-See [PORTABLE_GUIDE.md](PORTABLE_GUIDE.md) for detailed instructions.
+**"High Latency"**
+- Switch to **WebRTC** mode if possible.
+- In OBS, check your Output settings. Ensure **Keyframe Interval** is set to **2s** or **1s** for lower latency HLS.
 
-## 🎮 OBS Configuration
-
-1. Open OBS Studio
-2. Go to **Settings** → **Stream**
-3. Select **Custom** as Service
-4. Configure:
-   - **Server:** `rtmp://localhost:1935/live`
-   - **Stream Key:** `stream`
-5. Click **OK** and start streaming!
-
-## 🔑 Default Password
-
-**Default password:** `stream123`
-
-To change the password, edit `public/app.js`:
-
-```javascript
-const CORRECT_PASSWORD = 'your-new-password';
-```
-
-## 🌐 Sharing with Friends
-
-### Using Cloudflare Tunnel (Recommended)
-
-Cloudflare Tunnel provides free, unlimited bandwidth for external access.
-
-**Setup:**
-
-1. Install Cloudflare Tunnel:
-   ```bash
-   winget install --id Cloudflare.cloudflared
-   ```
-
-2. Run `start-server.bat` and select Cloudflare Tunnel when prompted
-
-3. Share the generated URL with friends!
-
-See [CLOUDFLARE_TUNNEL.md](CLOUDFLARE_TUNNEL.md) for detailed instructions.
-
-### Using Port Forwarding (Manual)
-
-If you prefer not to use Cloudflare Tunnel:
-
-1. Forward port 8080 on your router
-2. Share your public IP: `http://YOUR_PUBLIC_IP:8080`
-
-## 📁 Project Structure
-
-```
-PSRV/
-├── server.js           # Main server (RTMP + Express)
-├── package.json        # Dependencies and scripts
-├── public/
-│   ├── index.html     # Web interface
-│   ├── style.css      # Styling
-│   └── app.js         # Client-side logic
-└── README.md
-```
-
-## 🛠️ Troubleshooting
-
-### Stream not showing?
-
-1. **Check OBS is streaming:**
-   - Make sure you've clicked "Start Streaming" in OBS
-   - Verify the RTMP settings match: `rtmp://localhost:1935/live`
-
-2. **Wait a few seconds:**
-   - Stream takes 5-10 seconds to start after OBS begins
-
-3. **Check console output:**
-   - Look for "Stream started: /live/stream" message
-
-### External access not working?
-
-1. **Cloudflare Tunnel:** See [CLOUDFLARE_TUNNEL.md](CLOUDFLARE_TUNNEL.md) for setup
-
-2. **Alternative:** Use port forwarding instead (see above)
-
-3. **Local access only:** External access is optional - you can always use `http://localhost:8080`
-
-### Port already in use?
-
-- Change ports in `server.js`:
-  ```javascript
-  const HTTP_PORT = 8080; // Change to 8081, 3000, etc.
-  ```
-
-## 🎯 Tips
-
-- **Lower stream delay:** Reduce OBS encoder settings (use faster preset)
-- **Better quality:** Increase bitrate in OBS settings
-- **Mobile viewing:** The interface is fully responsive
-- **Session persistence:** Password is remembered during browser session
+**"Update Failed"**
+- Ensure you have an internet connection.
+- Download the latest version manually from GitHub if the auto-updater persists in failing.
 
 ## 📝 License
 
-MIT License - Feel free to use and modify!
-
-## 🤝 Support
-
-Having issues? Check:
-1. OBS streaming settings are correct
-2. Server console for error messages
-3. Browser console (F12) for client-side errors
-
----
-
-**Made with ❤️ for streamers**
+**Proprietary Software.**
+All rights reserved. Unauthorized copying, modification, distribution, or use of this software is strictly prohibited.
