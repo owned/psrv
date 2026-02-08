@@ -1,6 +1,22 @@
+# Node modules
+node_modules/
+dist/
+build-staging/
+
+# Secrets
+.env
+keys/
+*.key
+*.pem
+license.txt
+
 # Ignore everything
 *
 
-# Whitelist specific files
+# Whitelist
 !README.md
 !.gitignore
+!public/
+public/*
+!public/screenshots/
+!public/screenshots/*
