@@ -55,7 +55,31 @@ For real-time interaction (gaming, chatting), enable WebRTC:
 2.  Ensure a **TURN Server** is configured (we provide defaults, or use your own).
 3.  Viewers will automatically use WebRTC if supported, falling back to HLS if needed.
 
-### Health Dashboard
+## 🖥️ Screen Sharing & WebRTC
+PSRV includes a powerful **WebRTC** engine designed for ultra-low latency screen sharing and gaming.
+
+### 🌟 Key Features
+*   **WHIP/WHEP Protocol**: Industry-standard WebRTC signaling for sub-second latency (< 500ms).
+*   **Dual Broadcast Modes**:
+    *   **RTMP Relay**: Re-stream your high-production OBS output via WebRTC.
+    *   **Direct Capture**: Share your screen, window, or webcam directly from the app (no OBS required).
+*   **High Fidelity**: Supports **4K resolution** and bitrates up to **50 Mbps**.
+*   **Hot-Swapping**: Instantly switch between "Game Feed" and "Webcam" without disconnecting viewers.
+*   **Public Lobby**: Optionally list your room in the public directory for open access.
+
+### ⚙️ Configuration Guide
+1.  **Select Source**: In the WebRTC card, choose:
+    *   `RTMP Input`: To use your OBS stream.
+    *   `Webcam & Microphone`: To capture directly from your device.
+2.  **Quality Settings**:
+    *   **Latency Mode**: `Ultra-Low` (0.5s) for gaming, `Balanced` for better quality on poor connections.
+    *   **Bitrate**: Adjustable in Advanced Settings (default: Unlimited).
+3.  **TURN Server**:
+    *   Crucial for connecting through firewalls/NATs.
+    *   Enter your credentials in **Advanced Settings > WebRTC**.
+    *   *Recommendation*: Get a free account at [metered.ca](https://www.metered.ca).
+
+### 🏥 Health Dashboard
 Click the **Running Health Checks** button (heartbeat icon) to see the status of all subsystems:
 - HTTP/RTMP Server connectivity
 - WebSocket (Chat/Stats) latency
